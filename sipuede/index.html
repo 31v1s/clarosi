@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi novia?</title>
+    <style>
+        /* Global styles */
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #646060, #564658); /* Gradiente de Rosa pastel y Lavanda suave */
+    color: #333; /* Letras oscuras para contraste */
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background-image: url(fondo3.gif);
+}
+
+
+        .container {
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Animation for welcome message */
+        .welcome-message {
+            font-size: 2em;
+            font-weight: bold;
+            animation: fadeInOut 4s ease-in-out infinite;
+        }
+
+        /* Keyframes for fading effect */
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Messages and interactive sections */
+        .message {
+            margin: 20px;
+            font-size: 1.3em;
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            display: none;
+        }
+
+        .final-question {
+            font-size: 2em;
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Button animations */
+        .button-yes {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            color: #fff;
+            background-color: #ff69b4;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .button-yes:hover {
+            background-color: #ff3d81;
+            transform: scale(1.1);
+        }
+
+        .button-no {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            color: #fff;
+            background-color: #ccc;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            position: relative;
+            left: 30px;
+        }
+
+        /* Confetti animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #ff69b4;
+            opacity: 0.9;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-100px); }
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Hidden initially */
+        .confetti.hidden {
+            display: none;
+        }
+
+        /* Custom success message */
+        .success-message {
+            background-color: #ff69b4;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            display: none;
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+        .welcome-message {
+    color: #52e9e9; /* Rosa suave */
+}
+
+.message {
+    color: #FFD700; /* Dorado */
+}
+
+.final-question {
+    color: #40E0D0; /* Turquesa */
+}
+
+.success-message {
+    color: #FFFFFF; /* Blanco */
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-message">Para ti <span style="color: rgb(185, 57, 57);">SAORY</span> que eres muy especial...</div>
+
+        <!-- Messages that appear sequentially -->
+        <div id="message1" class="message">Desde que te conocí, senti algo muy especial.</div>
+        <div id="message2" class="message">Cada día, pienso en lo increíble que es hablar contigo.</div>
+        <div id="message3" class="message">No importa la distancia, mis sentimientos son claros.</div>
+
+        <!-- Final question section -->
+        <div id="final-question" class="final-question">
+            ¿Quieres ser mi novia? 💖
+            <div>
+                <button class="button-yes" onclick="showConfetti()">¡Sí!</button>
+                <button class="button-no" onclick="removeButton()">No</button>
+            </div>
+        </div>
+
+        <!-- Success message -->
+        <div id="success-message" class="success-message">
+            siiii gracias por ser parte de mi vida. 💖
+        </div>
+    </div>
+
+    <!-- Music to play on 'Yes' -->
+    <audio id="success-audio" src="music.mp3" preload="auto"></audio>
+
+    <!-- JavaScript for animations and interactions -->
+    <script>
+        // Fade in the container
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".container").style.opacity = "1";
+            showMessages();
+        });
+
+        // Display messages sequentially
+        function showMessages() {
+            const messages = [document.getElementById("message1"), document.getElementById("message2"), document.getElementById("message3")];
+            let index = 0;
+
+            const interval = setInterval(() => {
+                if (index < messages.length) {
+                    messages[index].style.display = "block";
+                    messages[index].style.opacity = "1";
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    document.getElementById("final-question").style.display = "block";
+                }
+            }, 2000); // Delay between messages
+        }
+
+        // Remove "No" button playfully
+        function removeButton() {
+            document.querySelector(".button-no").style.display = "none";
+        }
+
+        // Show confetti effect on "Yes" button click
+        function showConfetti() {
+            // Play the success music
+            document.getElementById("success-audio").play();
+
+            // Show the success message
+            document.getElementById("success-message").style.display = "block";
+
+            // Generate confetti
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement("div");
+                confetti.classList.add("confetti");
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+
+            // Remove confetti and success message after a while
+            setTimeout(() => {
+                document.querySelectorAll(".confetti").forEach(confetti => confetti.remove());
+                document.getElementById("success-message").style.display = "none";
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
